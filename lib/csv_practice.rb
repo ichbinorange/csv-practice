@@ -22,4 +22,14 @@ def get_all_gold_medalists(olympic_data)
   return gold_medals
 end
 
+# Optional - team_with_most_medals
+def team_with_most_medals(medal_totals)
+  max_medals = medal_totals.max_by { |team, metals| metals }
+  most_medals_team = medal_totals.select { |team, metals| metals == max_medals[1] }
 
+  result_for_most_medals = Hash("Team"=> Array.new, "Count"=> max_medals[1] )
+  most_medals_team.each do |team, metals|
+    result_for_most_medals["Team"] << team
+  end
+  return result_for_most_medals
+end
