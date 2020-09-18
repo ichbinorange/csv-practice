@@ -92,7 +92,7 @@ describe "CSV and Enumerables Exercise" do
     end
   end
 
-  xdescribe 'get_all_gold_medalists' do
+  describe 'get_all_gold_medalists' do
     
     it 'returns an array of gold medalists' do
       # Arrange
@@ -121,4 +121,55 @@ describe "CSV and Enumerables Exercise" do
     end
   end
 
+  describe 'team_with_most_medals' do
+    it 'returns an hash of the team with the most medals' do
+      # Arrange
+      data = [
+        {"Team"=> "Taiwan","Medal"=> "NA"},
+      {"Team"=> "Norway", "Medal"=> "Gold"},
+      {"Team"=> "Japan", "Medal"=> "Silver"},
+      {"Team"=> "Norway", "Medal"=> "Bronze"}
+      ]
+      total_medals = total_medals_per_team(data)
+
+      # Act
+      most_medals = team_with_most_medals(total_medals)
+
+      # Assert
+      expect(most_medals).must_be_instance_of Hash
+      expect(most_medals.keys).must_equal ["Team", "Count"]
+    end
+    
+    it 'has the correct country and number of medals' do
+      # Arrange
+      most_metals_country = {"Team" =>['United States'], "Count" => 944}
+      data = get_all_olympic_athletes(OLYMPIC_DATA_FILENAME)
+      total_medals = total_medals_per_team(data)
+
+      # Act
+      most_medals = team_with_most_medals(total_medals)
+
+      # Assert
+      expect(most_medals["Team"]).must_equal ['United States']
+      expect(most_medals["Count"]).must_equal 944
+    end
+    
+    it 'has a tie for the teams with the most medals' do
+      # Arrange
+      data = [
+        {"Team"=> "Japan","Medal"=> "Gold"},
+      {"Team"=> "Norway", "Medal"=> "Gold"},
+      {"Team"=> "Japan", "Medal"=> "Silver"},
+      {"Team"=> "Norway", "Medal"=> "Bronze"}
+     ]
+      total_medals = total_medals_per_team(data)
+
+      # Act
+      most_medals = team_with_most_medals(total_medals)
+
+      # Assert
+      expect(most_medals["Team"]).must_equal ["Japan", "Norway"] || ["Norway", "Japan"]
+      expect(most_medals["Count"]).must_equal 2
+    end
+  end
 end
