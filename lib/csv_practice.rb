@@ -27,9 +27,20 @@ def team_with_most_medals(medal_totals)
   max_medals = medal_totals.max_by { |team, metals| metals }
   most_medals_team = medal_totals.select { |team, metals| metals == max_medals[1] }
 
-  result_for_most_medals = Hash("Team"=> Array.new, "Count"=> max_medals[1] )
-  most_medals_team.each do |team, metals|
-    result_for_most_medals["Team"] << team
-  end
+  result_for_most_medals = Hash("Team"=> most_medals_team.keys, "Count"=> max_medals[1] )
   return result_for_most_medals
+end
+
+# Optional - athlete_height_in_inches
+def athlete_height_in_inches(olympic_data)
+  olympic_data.each do |athlete| 
+    if athlete["Height"].class == Integer || athlete["Height"].class == Float
+      athlete["Height"] = (athlete["Height"] * (1 / 2.54)).round(2)
+    elsif athlete["Height"].to_i.to_s == athlete["Height"] || athlete["Height"].to_f.to_s == athlete["Height"]
+      athlete["Height"] = (athlete["Height"].to_i * (1 / 2.54)).round(2)
+    else
+      athlete["Height"] = ""
+    end
+  end
+  return olympic_data
 end

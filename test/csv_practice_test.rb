@@ -172,4 +172,72 @@ describe "CSV and Enumerables Exercise" do
       expect(most_medals["Count"]).must_equal 2
     end
   end
+
+  describe 'athlete_height_in_inches' do
+    it 'returns an array of Olympic athletes hashes with height in inches' do
+      # Arrange
+      data = [
+        {"Height"=> 168.4},
+        {"Height"=> 158},
+        {"Height"=> 201.1},
+        {"Height"=> 175}
+      ]
+
+      # Act
+      height_in_inch = athlete_height_in_inches(data)
+
+      # Assert
+      expect(height_in_inch).must_be_instance_of Array
+      height_in_inch.each do |athlete|
+        expect(athlete["Height"]).must_be_instance_of Float 
+      end
+    end
+    
+    it 'has the right 1st and last row with Height converted from centimeter to inch' do
+      # Arrange
+      data = get_all_olympic_athletes(OLYMPIC_DATA_FILENAME)
+
+      # Act
+      height_in_inch = athlete_height_in_inches(data)
+
+      # Assert
+      expect(height_in_inch.first['ID']).must_equal '21'
+      expect(height_in_inch.first['Name']).must_equal 'Ragnhild Margrethe Aamodt'
+      expect(height_in_inch.first['Height']).must_equal 64.17
+      expect(height_in_inch.last['ID']).must_equal '135568'
+      expect(height_in_inch.last['Name']).must_equal 'Olga Igorevna Zyuzkova'
+      expect(height_in_inch.last['Height']).must_equal 67.32
+    end
+    
+    it 'has a string or nil class of data for conversion' do
+      # Arrange
+      data = [
+        {"Height"=> "NA"},
+        {"Height"=> ""},
+        {"Height"=> nil}
+      ]
+
+      # Act
+      height_in_inch = athlete_height_in_inches(data)
+
+      # Assert
+      height_in_inch.each do |athlete|
+        expect(athlete["Height"]).must_be_instance_of String
+      end
+
+      # Arrange
+      data = [
+        {"Height"=> "139"},
+        {"Height"=> "189.5"}
+      ]
+
+      # Act
+      height_in_inch = athlete_height_in_inches(data)
+
+      # Assert
+      height_in_inch.each do |athlete|
+        expect(athlete["Height"]).must_be_instance_of Float
+      end
+    end
+  end
 end
